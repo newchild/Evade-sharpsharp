@@ -42,7 +42,7 @@ namespace Evadesharpsharp
 		{
 			if (!sender.IsMinion)
 			{
-				if (args.Target == Player)
+				if (args.Target.IsMe)
 				{
 					Game.PrintChat("Dodging...");
 					Spell q = new Spell(SpellSlot.Q,600);
