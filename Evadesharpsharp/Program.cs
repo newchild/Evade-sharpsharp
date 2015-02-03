@@ -26,6 +26,7 @@ namespace Evadesharpsharp
 			commonMenu.AddItem(new MenuItem("evade.general.printinfo","Print Info in chat").SetValue(true));
 			_Menu.AddSubMenu(commonMenu);
 			_Menu.AddToMainMenu();
+			Game.PrintChat("Evade## loaded");
 			Game.OnGameUpdate += Game_OnGameUpdate;
 			Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
 		}
@@ -40,7 +41,7 @@ namespace Evadesharpsharp
 
 		static void Game_OnGameUpdate(EventArgs args)
 		{
-			Game.PrintChat("Evade## loaded");
+			
 		}
 	}
 }
