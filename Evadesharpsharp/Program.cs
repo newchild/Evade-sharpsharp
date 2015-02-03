@@ -8,6 +8,7 @@ using SpellDetector;
 using System.Drawing;
 using LeagueSharp.Common;
 using System.Threading.Tasks;
+using SpellDetector.Skillshots;
 
 namespace Evadesharpsharp
 {
@@ -31,22 +32,26 @@ namespace Evadesharpsharp
 			_Menu.AddToMainMenu();
 			Game.PrintChat("Evade## loaded");
 			Game.OnGameUpdate += Game_OnGameUpdate;
-			Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
+			SkillshotDetector.OnSkillshot +=SkillshotDetector_OnSkillshot;
 			Obj_AI_Hero.OnIssueOrder += Obj_AI_Hero_OnIssueOrder;
+		}
+
+		private static void SkillshotDetector_OnSkillshot(Skillshot spell)
+		{
+
+			if (Player.Position.Distance(spell.StartPosition.To3D()) >= (float)spell.SkillshotData.Range && spell.Direction.AngleBetween(Player.Position.To2D()) == 0f)
+			{
+				Game.PrintChat("hitting");
+				moveToBestLocation(spell);
+			}
+			else{
+				Game.PrintChat("not hitting");
+			}
 		}
 
 		
 
-		static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-		{
-			SpellDetector.Skillshots.SkillshotData data = new SpellDetector.Skillshots.SkillshotData();
-			SpellDetector.Skillshots.Skillshot help = new SpellDetector.Skillshots.Skillshot(SpellDetector.Skillshots.DetectionType.ProcessSpell, data, (int)args.TimeCast, args.Start.To2D(), args.End.To2D(), sender);
-			if (help.IsAboutToHit(2,Player))
-			{
-				Game.PrintChat("Spell is dangerous");
-				moveToBestLocation(sender,args,help);
-			};
-		}
+		
 
 		
 		
@@ -62,15 +67,15 @@ namespace Evadesharpsharp
 				args.Process = false;
 			}
 		}
-		static void moveToBestLocation(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args, SpellDetector.Skillshots.Skillshot skill)
+		static void moveToBestLocation(SpellDetector.Skillshots.Skillshot skill)
 		{
-			Vector2 bufferVector = sender.Position.To2D();
+			Vector2 bufferVector = Player.Position.To2D();
 			for (int i = -100; i <= 100; i++)
 			{
 				for (int j = -100; j <= 100; j++)
 				{
-					bufferVector.X = sender.Position.To2D().X + i;
-					bufferVector.Y = sender.Position.To2D().Y + j;
+					bufferVector.X = Player.Position.To2D().X + i;
+					bufferVector.Y = Player.Position.To2D().Y + j;
 					if (!skill.IsDanger(bufferVector) && bufferVector.IsValid() && !bufferVector.IsWall())
 					{
 						Player.IssueOrder(GameObjectOrder.MoveTo, bufferVector.To3D());
