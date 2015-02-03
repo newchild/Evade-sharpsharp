@@ -47,6 +47,7 @@ namespace Evadesharpsharp
 					
 					Spell q = new Spell(SpellSlot.Q,600);
 					if(Game.Time <= args.TimeSpellEnd-0.7){
+						Game.PrintChat("Dodging...");
 						foreach(var minion in MinionManager.GetMinions(q.Range)){
 							if(minion.IsValidTarget(q.Range)){
 								q.Cast(minion);
