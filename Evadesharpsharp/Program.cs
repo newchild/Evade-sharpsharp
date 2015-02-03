@@ -16,6 +16,7 @@ namespace Evadesharpsharp
 	{
 		private static Menu _Menu;
 		private static Obj_AI_Hero Player;
+		static GameObjectProcessSpellCastEventArgs argument;
 		private static bool isEvading = false;
 		static Spell q = new Spell(SpellSlot.Q, 600);
 		static System.Timers.Timer aTimer = new System.Timers.Timer();
@@ -44,9 +45,10 @@ namespace Evadesharpsharp
 
 		private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
 		{
+			
 			if (!sender.IsMinion)
 			{
-				if (args.Target.IsMe && q.IsReady() && !args.SData.IsAutoAttack() && sender.IsEnemy)
+				if (args.Target.IsMe && q.IsReady() && !args.SData.IsAutoAttack() && sender.IsEnemy	)
 				{
 					Game.PrintChat("Dodging...1");
 					
@@ -54,8 +56,13 @@ namespace Evadesharpsharp
 					aTimer.Elapsed+=new ElapsedEventHandler(OnTimedEvent);
 					aTimer.Interval=(args.TimeSpellEnd*-1*1000)+0.3*1000;
 					aTimer.Enabled=true;
+					argument = args;
 
 					
+				}
+				if (!args.SData.IsAutoAttack() && sender.IsEnemy)
+				{
+					Game.PrintChat(args.SData.Name);
 				}
 			}
 		}
