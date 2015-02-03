@@ -28,6 +28,8 @@ namespace Evadesharpsharp
 		private static void Game_OnGameLoad(EventArgs args)
 		{
 			Player = ObjectManager.Player;
+			if (Player.BaseSkinName != "MasterYI")
+				return;
 			_Menu = new Menu("Evade##", "evade", true);
 			var commonMenu = new Menu("General", "evade.general");
 			
@@ -50,7 +52,10 @@ namespace Evadesharpsharp
 			{
 				if (args.Target.IsMe && q.IsReady() && !args.SData.IsAutoAttack() && sender.IsEnemy	)
 				{
-					Game.PrintChat("Dodging...1");
+					if (_Menu.Item("evade.general.printinfo").GetValue<bool>())
+					{
+						Game.PrintChat("Dodging :^)");
+					}
 					
 					Game.PrintChat("" + Game.Time.ToString()  + " " + (args.TimeSpellEnd).ToString());
 					aTimer.Elapsed+=new ElapsedEventHandler(OnTimedEvent);
@@ -62,8 +67,10 @@ namespace Evadesharpsharp
 				}
 				if (args.SData.Name == "KarthusFallenOne")
 				{
-					Game.PrintChat("Dodging...1");
-
+					if (_Menu.Item("evade.general.printinfo").GetValue<bool>())
+					{
+						Game.PrintChat("Dodging :^)");
+					}
 					Game.PrintChat((args.TimeSpellEnd*-1).ToString());
 					aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 					aTimer.Interval = (args.TimeCast * -1 * 1000) + 0.3 * 1000 + 2400;
@@ -75,7 +82,6 @@ namespace Evadesharpsharp
 
 		private static void OnTimedEvent(object sender, ElapsedEventArgs e)
 		{
-			Game.PrintChat("Dodging...2");
 			var x = TargetSelector.GetTarget(q.Range,TargetSelector.DamageType.True);
 			if(x.IsValidTarget()){
 				q.Cast(x);
