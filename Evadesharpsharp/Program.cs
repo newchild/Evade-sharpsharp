@@ -46,7 +46,7 @@ namespace Evadesharpsharp
 		{
 			if (!sender.IsMinion)
 			{
-				if (args.Target.IsMe && q.IsReady() && !args.SData.IsAutoAttack())
+				if (args.Target.IsMe && q.IsReady() && !args.SData.IsAutoAttack() && sender.IsEnemy)
 				{
 					Game.PrintChat("Dodging...1");
 					
