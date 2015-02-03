@@ -24,13 +24,13 @@ namespace Evadesharpsharp
 		private static void Game_OnGameLoad(EventArgs args)
 		{
 			Player = ObjectManager.Player;
-			_Menu = new Menu("Evade## 0.1", "evade", true);
+			_Menu = new Menu("Evade##", "evade", true);
 			var commonMenu = new Menu("General", "evade.general");
 			commonMenu.AddItem(new MenuItem("evade.general.printinfo", "Print Info in chat").SetValue(true));
 			_Menu.AddSubMenu(commonMenu);
 			_Menu.AddToMainMenu();
 			Game.PrintChat("Evade## loaded");
-			//Obj_AI_Hero.OnProcessSpellCast+=Obj_AI_Hero_OnProcessSpellCast;
+			Obj_AI_Hero.OnProcessSpellCast+=Obj_AI_Hero_OnProcessSpellCast;
 			foreach (var spellData in ObjectManager.Player.Spellbook.Spells)
 			{
 				//Access the data you need:
