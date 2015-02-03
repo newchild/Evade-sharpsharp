@@ -18,7 +18,7 @@ namespace Evadesharpsharp
 		private static Obj_AI_Hero Player;
 		static GameObjectProcessSpellCastEventArgs argument;
 		private static bool isEvading = false;
-		static Spell q = new Spell(SpellSlot.Q, 600);
+		static Spell q = new Spell(SpellSlot.Q, 620);
 		static System.Timers.Timer aTimer = new System.Timers.Timer();
 		static void Main(string[] args)
 		{
