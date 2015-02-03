@@ -38,7 +38,7 @@ namespace Evadesharpsharp
 			} 
 		}
 
-		/*private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+		private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
 		{
 			if (!sender.IsMinion)
 			{
@@ -46,11 +46,16 @@ namespace Evadesharpsharp
 				{
 					
 					Spell q = new Spell(SpellSlot.Q,600);
-					ObjectManager.Player.Spellbook.Spells
-					if(Game.Time <= args.TimeSpellEnd-q.)
+					if(Game.Time <= args.TimeSpellEnd-0.7){
+						foreach(var minion in MinionManager.GetMinions(q.Range)){
+							if(minion.IsValidTarget(q.Range)){
+								q.Cast(minion);
+							}
+						}
+					}
 				}
 			}
-		}*/
+		}
 
 
 
