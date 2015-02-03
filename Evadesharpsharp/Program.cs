@@ -40,7 +40,6 @@ namespace Evadesharpsharp
 
 		private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
 		{
-			Game.PrintChat(args.Target.Name);
 			if (!sender.IsMinion)
 			{
 				if (args.Target.IsMe)
