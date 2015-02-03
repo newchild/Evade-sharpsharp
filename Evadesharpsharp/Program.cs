@@ -51,7 +51,7 @@ namespace Evadesharpsharp
 					
 					Game.PrintChat("" + Game.Time.ToString()  + " " + (args.TimeSpellEnd).ToString());
 					aTimer.Elapsed+=new ElapsedEventHandler(OnTimedEvent);
-					aTimer.Interval=(args.TimeSpellEnd*-1)+0.5;
+					aTimer.Interval=(args.TimeSpellEnd*-1)+0.4;
 					aTimer.Enabled=true;
 
 					
