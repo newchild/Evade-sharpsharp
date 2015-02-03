@@ -8,6 +8,7 @@ using SpellDetector;
 using System.Drawing;
 using LeagueSharp.Common;
 using System.Threading.Tasks;
+using SpellDetector.Skillshots;
 
 namespace Evadesharpsharp
 {
@@ -18,82 +19,27 @@ namespace Evadesharpsharp
 		private static bool isEvading = false;
 		static void Main(string[] args)
 		{
-			CustomEvents.Game.OnGameLoad+=Game_OnGameLoad;
+			CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
 		}
 
 		private static void Game_OnGameLoad(EventArgs args)
 		{
 			Player = ObjectManager.Player;
-			_Menu = new Menu("Evade##","evade",true);
-			var commonMenu = new Menu("General","evade.general");
-			commonMenu.AddItem(new MenuItem("evade.general.printinfo","Print Info in chat").SetValue(true));
+			_Menu = new Menu("Evade##", "evade", true);
+			var commonMenu = new Menu("General", "evade.general");
+			commonMenu.AddItem(new MenuItem("evade.general.printinfo", "Print Info in chat").SetValue(true));
 			_Menu.AddSubMenu(commonMenu);
 			_Menu.AddToMainMenu();
 			Game.PrintChat("Evade## loaded");
-			Game.OnGameUpdate += Game_OnGameUpdate;
-			Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
-			Obj_AI_Hero.OnIssueOrder += Obj_AI_Hero_OnIssueOrder;
+			SkillshotDetector.OnSkillshot+=SkillshotDetector_OnSkillshot;
 		}
 
-		
-
-		static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+		private static void SkillshotDetector_OnSkillshot(Skillshot spell)
 		{
-			SpellDetector.Skillshots.SkillshotData data = new SpellDetector.Skillshots.SkillshotData();
-			Game.Say(data.ChampionName);
-			SpellDetector.Skillshots.Skillshot spell = new SpellDetector.Skillshots.Skillshot(SpellDetector.Skillshots.DetectionType.ProcessSpell,data,(int)args.TimeCast,args.Start.To2D(),args.End.To2D(),sender);
-			if (Player.Position.Distance(spell.StartPosition.To3D()) >= (float)spell.SkillshotData.Range && spell.Direction.AngleBetween(Player.Position.To2D()) == 0f)
-			{
-				Game.PrintChat("hitting");
-				moveToBestLocation(spell);
-			}
-			else
-			{
-				Game.PrintChat("not hitting");
-			}
+			Game.PrintChat("Spell recoginized");
 		}
 
-		
-		
 
-		static void Game_OnGameUpdate(EventArgs args)
-		{
-			
-		}
-		static void Obj_AI_Hero_OnIssueOrder(Obj_AI_Base sender, GameObjectIssueOrderEventArgs args)
-		{
-			if (isEvading)
-			{
-				args.Process = false;
-			}
-		}
-		static void moveToBestLocation( SpellDetector.Skillshots.Skillshot skill)
-		{
-			Obj_AI_Hero sender = Player;
-			Vector2 bufferVector = sender.Position.To2D();
-			for (int i = -100; i <= 100; i++)
-			{
-				for (int j = -100; j <= 100; j++)
-				{
-					bufferVector.X = sender.Position.To2D().X + i;
-					bufferVector.Y = sender.Position.To2D().Y + j;
-					if (!skill.IsDanger(bufferVector) && bufferVector.IsValid() && !bufferVector.IsWall())
-					{
-						Player.IssueOrder(GameObjectOrder.MoveTo, bufferVector.To3D());
-						isEvading = true;
-						while(Player.IsMoving){
 
-						}
-						isEvading = false;
-						goto End;
-					}
-
-				}
-			}
-			Game.PrintChat("Couldn't find evade spot");
-			return;
-		End:
-			Game.PrintChat("Successfully evaded!");
-		}
 	}
 }
