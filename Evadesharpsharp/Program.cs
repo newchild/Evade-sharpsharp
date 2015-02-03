@@ -24,7 +24,7 @@ namespace Evadesharpsharp
 		private static void Game_OnGameLoad(EventArgs args)
 		{
 			Player = ObjectManager.Player;
-			_Menu = new Menu("Evade##", "evade", true);
+			_Menu = new Menu("Evade## 0.1", "evade", true);
 			var commonMenu = new Menu("General", "evade.general");
 			commonMenu.AddItem(new MenuItem("evade.general.printinfo", "Print Info in chat").SetValue(true));
 			_Menu.AddSubMenu(commonMenu);
@@ -40,6 +40,7 @@ namespace Evadesharpsharp
 
 		private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
 		{
+			Game.PrintChat(args.Target.Name);
 			if (!sender.IsMinion)
 			{
 				if (args.Target.IsMe)
