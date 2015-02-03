@@ -18,6 +18,7 @@ namespace Evadesharpsharp
 		private static Obj_AI_Hero Player;
 		private static bool isEvading = false;
 		static Spell q = new Spell(SpellSlot.Q, 600);
+		static System.Timers.Timer aTimer = new System.Timers.Timer();
 		static void Main(string[] args)
 		{
 			CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
@@ -44,12 +45,11 @@ namespace Evadesharpsharp
 		{
 			if (!sender.IsMinion)
 			{
-				if (args.Target.IsMe)
+				if (args.Target.IsMe && q.IsReady())
 				{
 					Game.PrintChat("Dodging...1");
 					
 					Game.PrintChat("" + Game.Time.ToString()  + " " + (args.TimeSpellEnd).ToString());
-					System.Timers.Timer aTimer = new System.Timers.Timer();
 					aTimer.Elapsed+=new ElapsedEventHandler(OnTimedEvent);
 					aTimer.Interval=(args.TimeSpellEnd*-1)+0.5;
 					aTimer.Enabled=true;
@@ -69,6 +69,7 @@ namespace Evadesharpsharp
 					q.Cast(minion);
 				}
 			}
+			aTimer.Enabled = false;
 		}
 
 
