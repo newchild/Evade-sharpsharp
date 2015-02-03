@@ -8,6 +8,7 @@ using SpellDetector;
 using System.Drawing;
 using LeagueSharp.Common;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Evadesharpsharp
 {
@@ -16,6 +17,7 @@ namespace Evadesharpsharp
 		private static Menu _Menu;
 		private static Obj_AI_Hero Player;
 		private static bool isEvading = false;
+		static Spell q = new Spell(SpellSlot.Q, 600);
 		static void Main(string[] args)
 		{
 			CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
@@ -45,19 +47,26 @@ namespace Evadesharpsharp
 				if (args.Target.IsMe)
 				{
 					Game.PrintChat("Dodging...1");
-					Spell q = new Spell(SpellSlot.Q,600);
+					
 					Game.PrintChat("" + Game.Time.ToString()  + " " + (args.TimeSpellEnd).ToString());
-					while(!(0 >= (args.TimeSpellEnd*-1)+0.5)){
-						
-					}
-					Game.PrintChat("Dodging...");
-					foreach (var minion in MinionManager.GetMinions(q.Range))
-					{
-						if (minion.IsValidTarget(q.Range))
-						{
-							q.Cast(minion);
-						}
-					}
+					System.Timers.Timer aTimer = new System.Timers.Timer();
+					aTimer.Elapsed+=new ElapsedEventHandler(OnTimedEvent);
+					aTimer.Interval=(args.TimeSpellEnd*-1)+0.5;
+					aTimer.Enabled=true;
+
+					
+				}
+			}
+		}
+
+		private static void OnTimedEvent(object sender, ElapsedEventArgs e)
+		{
+			Game.PrintChat("Dodging...2");
+			foreach (var minion in MinionManager.GetMinions(q.Range))
+			{
+				if (minion.IsValidTarget(q.Range))
+				{
+					q.Cast(minion);
 				}
 			}
 		}
