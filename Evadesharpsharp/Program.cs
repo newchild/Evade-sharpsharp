@@ -41,9 +41,9 @@ namespace Evadesharpsharp
 		{
 			SpellDetector.Skillshots.SkillshotData data = new SpellDetector.Skillshots.SkillshotData();
 			SpellDetector.Skillshots.Skillshot help = new SpellDetector.Skillshots.Skillshot(SpellDetector.Skillshots.DetectionType.ProcessSpell, data, (int)args.TimeCast, args.Start.To2D(), args.End.To2D(), sender);
-			Game.PrintChat("Skill detected");
 			if (help.IsDanger(Player.Position.To2D()))
 			{
+				Game.PrintChat("Spell is dangerous");
 				moveToBestLocation(sender,args,help);
 			};
 		}
