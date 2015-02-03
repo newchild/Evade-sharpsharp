@@ -90,6 +90,8 @@ namespace Evadesharpsharp
 					if (minion.IsValidTarget(q.Range))
 					{
 						q.Cast(minion);
+						aTimer.Enabled = false;
+						return;
 					}
 			}
 				
