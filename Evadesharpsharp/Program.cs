@@ -39,7 +39,9 @@ namespace Evadesharpsharp
 
 		static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
 		{
-			SpellDetector.Skillshots.SkillshotData spell = new SpellDetector.Skillshots.SkillshotData();
+			SpellDetector.Skillshots.SkillshotData data = new SpellDetector.Skillshots.SkillshotData();
+			Game.Say(data.ChampionName);
+			SpellDetector.Skillshots.Skillshot spell = new SpellDetector.Skillshots.Skillshot(SpellDetector.Skillshots.DetectionType.ProcessSpell,data,(int)args.TimeCast,args.Start.To2D(),args.End.To2D(),sender);
 			if (Player.Position.Distance(spell.StartPosition.To3D()) >= (float)spell.SkillshotData.Range && spell.Direction.AngleBetween(Player.Position.To2D()) == 0f)
 			{
 				Game.PrintChat("hitting");
