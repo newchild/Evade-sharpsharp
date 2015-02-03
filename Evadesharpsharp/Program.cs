@@ -29,16 +29,17 @@ namespace Evadesharpsharp
 			Player = ObjectManager.Player;
 			_Menu = new Menu("Evade##", "evade", true);
 			var commonMenu = new Menu("General", "evade.general");
+			
 			commonMenu.AddItem(new MenuItem("evade.general.printinfo", "Print Info in chat").SetValue(true));
 			_Menu.AddSubMenu(commonMenu);
+			Menu ts = _Menu.AddSubMenu(new Menu("Target Selector", "Target Selector")); ;
+			TargetSelector.AddToMenu(ts);
 			_Menu.AddToMainMenu();
+			
+			
 			Game.PrintChat("Evade## loaded");
 			Obj_AI_Hero.OnProcessSpellCast+=Obj_AI_Hero_OnProcessSpellCast;
-			foreach (var spellData in ObjectManager.Player.Spellbook.Spells)
-			{
-				//Access the data you need:
-				Game.PrintChat(spellData.Name + " " + spellData.SData.SpellCastTime);
-			} 
+			
 		}
 
 		private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
@@ -51,7 +52,7 @@ namespace Evadesharpsharp
 					
 					Game.PrintChat("" + Game.Time.ToString()  + " " + (args.TimeSpellEnd).ToString());
 					aTimer.Elapsed+=new ElapsedEventHandler(OnTimedEvent);
-					aTimer.Interval=(args.TimeSpellEnd*-1)+0.4;
+					aTimer.Interval=(args.TimeSpellEnd*-1);
 					aTimer.Enabled=true;
 
 					
@@ -62,13 +63,25 @@ namespace Evadesharpsharp
 		private static void OnTimedEvent(object sender, ElapsedEventArgs e)
 		{
 			Game.PrintChat("Dodging...2");
+			var x = TargetSelector.GetTarget(q.Range,TargetSelector.DamageType.True);
+			if(x.IsValidTarget()){
+				q.Cast(x);
+				aTimer.Enabled = false;
+				return;
+				
+			}
 			foreach (var minion in MinionManager.GetMinions(q.Range))
 			{
-				if (minion.IsValidTarget(q.Range))
-				{
-					q.Cast(minion);
-				}
+			
+				
+					if (minion.IsValidTarget(q.Range))
+					{
+						q.Cast(minion);
+					}
 			}
+				
+				
+			
 			aTimer.Enabled = false;
 		}
 
