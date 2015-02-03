@@ -60,9 +60,15 @@ namespace Evadesharpsharp
 
 					
 				}
-				if (!args.SData.IsAutoAttack() && sender.IsEnemy)
+				if (args.SData.Name == "KarthusFallenOne")
 				{
-					Game.PrintChat(args.SData.Name);
+					Game.PrintChat("Dodging...1");
+
+					Game.PrintChat((args.TimeSpellEnd*-1).ToString());
+					aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+					aTimer.Interval = (args.TimeSpellEnd * -1 * 1000) + 0.3 * 1000;
+					aTimer.Enabled = true;
+					argument = args;
 				}
 			}
 		}
