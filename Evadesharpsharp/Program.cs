@@ -44,15 +44,18 @@ namespace Evadesharpsharp
 			{
 				if (args.Target.IsMe)
 				{
-					Game.PrintChat("Dodging...");
+					Game.PrintChat("Dodging...1");
 					Spell q = new Spell(SpellSlot.Q,600);
 					Game.PrintChat("" + Game.Time.ToString()  + " " + (args.TimeSpellEnd).ToString());
-					if(0 >= args.TimeSpellEnd+0.5){
-						Game.PrintChat("Dodging...");
-						foreach(var minion in MinionManager.GetMinions(q.Range)){
-							if(minion.IsValidTarget(q.Range)){
-								q.Cast(minion);
-							}
+					while(!(0 >= (args.TimeSpellEnd*-1)+0.5)){
+						
+					}
+					Game.PrintChat("Dodging...");
+					foreach (var minion in MinionManager.GetMinions(q.Range))
+					{
+						if (minion.IsValidTarget(q.Range))
+						{
+							q.Cast(minion);
 						}
 					}
 				}
