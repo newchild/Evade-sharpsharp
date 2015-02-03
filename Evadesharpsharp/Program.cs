@@ -33,7 +33,7 @@ namespace Evadesharpsharp
 
 		static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
 		{
-			if(!sender.IsMinion)
+			if (!sender.IsMinion && !args.SData.Name.StartsWith("SRUAP"))
 				Game.Say("/all Spell fired at x: " + args.Start.X + " y: " + args.Start.Y + " z: " + args.Start.Z + " visible? " + sender.IsVisible + " Spellname: " + args.SData.Name);
 		}
 
