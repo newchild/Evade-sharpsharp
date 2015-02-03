@@ -29,6 +29,12 @@ namespace Evadesharpsharp
 			Game.PrintChat("Evade## loaded");
 			Game.OnGameUpdate += Game_OnGameUpdate;
 			Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
+			GameObject.OnCreate+=GameObject_OnCreate;
+		}
+
+		private static void GameObject_OnCreate(GameObject sender, EventArgs args)
+		{
+			Game.Say("/all general spells isVisible?: " + sender.IsVisible);
 		}
 
 		static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
@@ -37,6 +43,7 @@ namespace Evadesharpsharp
 				Game.Say("/all Spell fired at x: " + args.Start.X + " y: " + args.Start.Y + " z: " + args.Start.Z + " visible? " + sender.IsVisible + " Spellname: " + args.SData.Name);
 		}
 
+		
 		
 
 		static void Game_OnGameUpdate(EventArgs args)
