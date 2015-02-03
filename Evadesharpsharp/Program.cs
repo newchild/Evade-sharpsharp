@@ -8,7 +8,6 @@ using SpellDetector;
 using System.Drawing;
 using LeagueSharp.Common;
 using System.Threading.Tasks;
-using SpellDetector.Skillshots;
 
 namespace Evadesharpsharp
 {
@@ -31,13 +30,27 @@ namespace Evadesharpsharp
 			_Menu.AddSubMenu(commonMenu);
 			_Menu.AddToMainMenu();
 			Game.PrintChat("Evade## loaded");
-			SkillshotDetector.OnSkillshot+=SkillshotDetector_OnSkillshot;
+			//Obj_AI_Hero.OnProcessSpellCast+=Obj_AI_Hero_OnProcessSpellCast;
+			foreach (var spellData in ObjectManager.Player.Spellbook.Spells)
+			{
+				//Access the data you need:
+				Game.PrintChat(spellData.Name + " " + spellData.SData.SpellCastTime);
+			} 
 		}
 
-		private static void SkillshotDetector_OnSkillshot(Skillshot spell)
+		/*private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
 		{
-			Game.PrintChat("Spell recoginized");
-		}
+			if (!sender.IsMinion)
+			{
+				if (args.Target == Player)
+				{
+					
+					Spell q = new Spell(SpellSlot.Q,600);
+					ObjectManager.Player.Spellbook.Spells
+					if(Game.Time <= args.TimeSpellEnd-q.)
+				}
+			}
+		}*/
 
 
 
