@@ -44,7 +44,7 @@ namespace Evadesharpsharp
 			{
 				if (args.Target == Player)
 				{
-					
+					Game.PrintChat("Dodging...");
 					Spell q = new Spell(SpellSlot.Q,600);
 					if(Game.Time <= args.TimeSpellEnd-0.7){
 						Game.PrintChat("Dodging...");
